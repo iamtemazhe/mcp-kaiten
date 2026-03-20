@@ -35,8 +35,8 @@ export function registerSpaceTools(
 
   server.tool(
     "kaiten_get_space",
-    "Get space details: title, description, "
-    + "members.",
+    "Get space details. Get spaceId from "
+    + "kaiten_list_spaces.",
     {
       spaceId: z.number().int().describe(
         "Space ID",
@@ -77,8 +77,8 @@ export function registerSpaceTools(
 
   server.tool(
     "kaiten_get_board",
-    "Get board details: title, columns, lanes, "
-    + "space.",
+    "Get board details: title, columns, lanes. "
+    + "Get boardId from kaiten_list_boards.",
     {
       boardId: z.number().int().describe(
         "Board ID",
@@ -120,9 +120,8 @@ export function registerSpaceTools(
 
   server.tool(
     "kaiten_list_lanes",
-    "List swimlanes of a board. Lanes are "
-    + "horizontal rows that group cards (e.g. by "
-    + "team or priority).",
+    "List swimlanes of a board. Use laneId in "
+    + "kaiten_create_card or kaiten_update_card.",
     {
       boardId: z.number().int().describe(
         "Board ID",
@@ -143,19 +142,17 @@ export function registerSpaceTools(
 
   server.tool(
     "kaiten_list_card_types",
-    "List card types available on a board (e.g. "
-    + "Bug, Feature, Task). Use typeId in "
+    "List all card types in the workspace (e.g. "
+    + "Bug, Feature, Task). Global endpoint, "
+    + "not board-specific. Use typeId in "
     + "kaiten_create_card.",
     {
-      boardId: z.number().int().describe(
-        "Board ID",
-      ),
       verbosity: verbositySchema,
     },
-    handleTool(async ({ boardId, verbosity }) => {
+    handleTool(async ({ verbosity }) => {
       const v = verbosity as Verbosity;
       const types = await boardsCache.getOrFetch(
-        `board:${boardId}:types`,
+        "global:card-types",
         () => get<Obj[]>("/card-types"),
       );
       if (v === "raw") return jsonResult(types);

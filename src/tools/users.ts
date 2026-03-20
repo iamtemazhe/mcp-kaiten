@@ -31,9 +31,9 @@ export function registerUserTools(
 
   server.tool(
     "kaiten_list_users",
-    "List all users in the organization. Use to "
-    + "find user IDs for ownerId/memberIds "
-    + "filters in search.",
+    "List all users in the organization. Use IDs "
+    + "for ownerId/memberIds in "
+    + "kaiten_search_cards.",
     { verbosity: verbositySchema },
     handleTool(async ({ verbosity }) => {
       const v = verbosity as Verbosity;
@@ -48,8 +48,8 @@ export function registerUserTools(
 
   server.tool(
     "kaiten_get_user_roles",
-    "Get roles and permissions of the current "
-    + "user across spaces and boards.",
+    "Get roles of the current user. Use roleId in "
+    + "kaiten_create_timelog.",
     { verbosity: verbositySchema },
     handleTool(async ({ verbosity }) => {
       const v = verbosity as Verbosity;

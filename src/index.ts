@@ -18,7 +18,7 @@ import { registerUserTools } from "./tools/users.js";
 const server = new McpServer(
   {
     name: "mcp-kaiten",
-    version: "1.0.0",
+    version: "1.0.1",
   },
   {
     capabilities: {

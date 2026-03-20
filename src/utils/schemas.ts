@@ -15,8 +15,8 @@ export const paginationSchema = {
 };
 
 export const conditionSchema = z.number().int()
-  .min(1).max(2).default(1)
-  .describe("1=active, 2=archived");
+  .min(1).max(3).default(1)
+  .describe("1=active, 2=archived, 3=all");
 
 export function buildOptionalBody(
   pairs: [string, unknown][],

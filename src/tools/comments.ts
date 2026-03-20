@@ -17,7 +17,8 @@ export function registerCommentTools(
   server.tool(
     "kaiten_get_card_comments",
     "Get all comments for a card, ordered by "
-    + "date. Returns author, text, timestamps.",
+    + "date. Use commentId from results in "
+    + "kaiten_update_comment/kaiten_delete_comment.",
     {
       cardId: z.number().int().describe("Card ID"),
       verbosity: verbositySchema,
@@ -35,8 +36,9 @@ export function registerCommentTools(
 
   server.tool(
     "kaiten_create_comment",
-    "Add a comment to a card. Text supports HTML "
-    + "formatting (<b>, <i>, <a>, <ul>, <ol>).",
+    "Add a comment to a card. Get cardId from "
+    + "kaiten_search_cards. Text supports HTML "
+    + "(<b>, <i>, <a>, <ul>, <ol>).",
     {
       cardId: z.number().int().describe("Card ID"),
       text: z.string().describe(
@@ -59,8 +61,9 @@ export function registerCommentTools(
 
   server.tool(
     "kaiten_update_comment",
-    "Replace comment text. Requires both cardId "
-    + "and commentId. Text supports HTML.",
+    "Replace comment text. Get commentId from "
+    + "kaiten_get_card_comments. Text supports "
+    + "HTML.",
     {
       cardId: z.number().int().describe("Card ID"),
       commentId: z.number().int().describe(
@@ -85,7 +88,8 @@ export function registerCommentTools(
 
   server.tool(
     "kaiten_delete_comment",
-    "Permanently delete a comment from a card.",
+    "Permanently delete a comment. Get commentId "
+    + "from kaiten_get_card_comments.",
     {
       cardId: z.number().int().describe("Card ID"),
       commentId: z.number().int().describe(

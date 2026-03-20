@@ -48,9 +48,9 @@ export function registerTimelogTools(
 
   server.tool(
     "kaiten_get_card_timelogs",
-    "Get all time-log entries for a specific "
-    + "card. Returns time spent, author, date, "
-    + "and comment.",
+    "Get time-logs for a card. Use logId from "
+    + "results in kaiten_update_timelog/"
+    + "kaiten_delete_timelog.",
     {
       cardId: z.number().int().describe("Card ID"),
       verbosity: verbositySchema,

@@ -21,10 +21,10 @@ export function registerCardTools(
 ): void {
   server.tool(
     "kaiten_get_card",
-    "Get full card details by ID. Returns title, "
-    + "description, owner, column, board, tags, "
-    + "dates. Set includeChildren=true to also "
-    + "fetch child cards.",
+    "Get full card details by ID. Find cardId via "
+    + "kaiten_search_cards or kaiten_get_board_cards. "
+    + "Set includeChildren=true to also fetch "
+    + "child cards.",
     {
       cardId: z.number().int().describe("Card ID"),
       includeChildren: z.boolean().default(false)
@@ -58,12 +58,12 @@ export function registerCardTools(
 
   server.tool(
     "kaiten_search_cards",
-    "Search cards with filters, dates, and "
-    + "pagination. Always specify boardId or "
-    + "spaceId to avoid large responses. Use root "
-    + "word forms for query (e.g. 'авториз' "
-    + "instead of 'авторизация'). Case-insensitive "
-    + "partial match on title.",
+    "Search cards with filters and pagination. "
+    + "Use kaiten_list_boards/kaiten_list_spaces "
+    + "to get boardId/spaceId. Always specify one "
+    + "to avoid large responses. Use root word "
+    + "forms for query (case-insensitive title "
+    + "match).",
     {
       query: z.string().optional().describe(
         "Search query",
@@ -80,9 +80,7 @@ export function registerCardTools(
         "Filter by card type ID",
       ),
       state: optionalInt("Card state filter"),
-      condition: z.number().int().min(1).max(3)
-        .default(1)
-        .describe("1=active, 2=archived, 3=all"),
+      condition: conditionSchema,
       asap: z.boolean().optional().describe(
         "Filter urgent cards",
       ),
@@ -201,8 +199,8 @@ export function registerCardTools(
           limit: String(limit),
           skip: String(offset),
           condition: String(condition),
-          sort_by: "created",
-          sort_direction: "desc",
+          order_by: "created",
+          order_direction: "desc",
         },
       );
       return jsonResult(
@@ -234,8 +232,8 @@ export function registerCardTools(
           limit: String(limit),
           skip: String(offset),
           condition: String(condition),
-          sort_by: "created",
-          sort_direction: "desc",
+          order_by: "created",
+          order_direction: "desc",
         },
       );
       return jsonResult(
@@ -305,10 +303,9 @@ export function registerCardTools(
 
   server.tool(
     "kaiten_update_card",
-    "Update card fields: title, description, "
-    + "column, lane, board, type, state, size, "
-    + "owner, due date, urgency. Only provided "
-    + "fields are changed.",
+    "Update card fields. Only provided fields are "
+    + "changed. Use kaiten_list_columns for "
+    + "columnId, kaiten_list_lanes for laneId.",
     {
       cardId: z.number().int().describe("Card ID"),
       title: z.string().optional().describe(
@@ -361,8 +358,8 @@ export function registerCardTools(
 
   server.tool(
     "kaiten_delete_card",
-    "Permanently delete a card. This action "
-    + "cannot be undone.",
+    "Permanently delete a card. Cannot be undone. "
+    + "Get cardId from kaiten_search_cards.",
     {
       cardId: z.number().int().describe("Card ID"),
     },
